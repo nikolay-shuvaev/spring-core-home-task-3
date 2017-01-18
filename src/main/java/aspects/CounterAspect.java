@@ -1,14 +1,15 @@
 package aspects;
 
+import dao.CounterDao;
 import entities.Event;
 import entities.StatisticEntry;
 import entities.Ticket;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,8 +19,7 @@ import java.util.Map;
 @Aspect
 @Component
 public class CounterAspect {
-
-    private static Map<Long, StatisticEntry> counters = new HashMap<>();
+    private CounterDao counterDao;
 
     @Pointcut("execution(* services.EventService.getEventByName(..))")
     public void eventNameAccess() {
@@ -37,40 +37,29 @@ public class CounterAspect {
     }
 
     @AfterReturning(pointcut = "eventNameAccess()",
-                    returning = "event")
+            returning = "event")
     public void countEventByNameAccess(Event event) {
-        StatisticEntry statisticEntry = getStatisticEntry(event);
-        Long priceQueriedCount = statisticEntry.getAccessedByNameCount();
-        statisticEntry.setAccessedByNameCount(++priceQueriedCount);
+        counterDao.incrementAccessedByName(event.getId());
     }
 
     @AfterReturning("eventPriceAccess() && args(event, ..)")
     public void countEventPriceAccess(Event event) {
-        StatisticEntry statisticEntry = getStatisticEntry(event);
-        Long priceQueriedCount = statisticEntry.getPriceQueriedCount();
-        statisticEntry.setPriceQueriedCount(++priceQueriedCount);
+        counterDao.incrementPriceQueried(event.getId());
     }
 
     @AfterReturning("eventBooking() && args(tickets, ..)")
     public void countEventBooking(List<Ticket> tickets) {
         for (Ticket ticket : tickets) {
-            StatisticEntry statisticEntry = getStatisticEntry(ticket.getEvent());
-            Long ticketBookingCount = statisticEntry.getTicketBookingCount();
-            statisticEntry.setTicketBookingCount(++ticketBookingCount);
+            counterDao.incrementTicketBooking(ticket.getEvent().getId());
         }
-    }
-
-
-    private StatisticEntry getStatisticEntry(Event event) {
-        StatisticEntry statisticEntry = counters.get(event.getId());
-        if (statisticEntry == null) {
-            statisticEntry = new StatisticEntry();
-            counters.put(event.getId(), statisticEntry);
-        }
-        return statisticEntry;
     }
 
     public Map<Long, StatisticEntry> getCounters() {
-        return counters;
+        return counterDao.getAllByEventId();
+    }
+
+    @Autowired
+    public void setCounterDao(CounterDao counterDao) {
+        this.counterDao = counterDao;
     }
 }

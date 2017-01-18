@@ -13,7 +13,7 @@ import java.util.Map;
  * Created by NICK on 05.01.2017.
  */
 @Repository
-public class ScheduleTableDaoImpl implements ScheduleTableDao {
+public class ScheduleTableDaoImpl extends AbstractDao implements ScheduleTableDao {
     private Map<String, Auditorium> scheduleTable = new HashMap<>();
 
     @Override

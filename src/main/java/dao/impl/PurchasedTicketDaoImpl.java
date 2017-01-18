@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by NICK on 06.01.2017.
  */
 @Repository
-public class PurchasedTicketDaoImpl implements PurchasedTicketDao {
+public class PurchasedTicketDaoImpl extends AbstractDao implements PurchasedTicketDao {
     private Map<String, List<Ticket>> purchasedTickets = new HashMap<>();
     @Override
     public long saveTicket(Ticket ticket) {

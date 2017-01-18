@@ -3,6 +3,7 @@ import configuration.AppConfig;
 import configuration.AspectConfiguration;
 import entities.*;
 import junit.framework.TestCase;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -100,6 +101,7 @@ public class StatisticAspectTest extends TestCase {
             // Should fail and not count
         }
 
+        counters = counterAspect.getCounters();
         assertEquals(Long.valueOf(2L), counters.get(event1.getId()).getPriceQueriedCount());
         assertEquals(Long.valueOf(1L), counters.get(event2.getId()).getPriceQueriedCount());
         assertEquals(Long.valueOf(1L), counters.get(event3.getId()).getPriceQueriedCount());
@@ -132,9 +134,9 @@ public class StatisticAspectTest extends TestCase {
             // Should fail and not count
         }
 
+        counters = counterAspect.getCounters();
         assertEquals(Long.valueOf(3L), counters.get(event1.getId()).getTicketBookingCount());
         assertEquals(Long.valueOf(3L), counters.get(event2.getId()).getTicketBookingCount());
         assertEquals(Long.valueOf(3L), counters.get(event3.getId()).getTicketBookingCount());
     }
-
 }

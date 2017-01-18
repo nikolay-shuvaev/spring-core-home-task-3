@@ -3,6 +3,7 @@ package dao.impl;
 import dao.EventDao;
 import entities.Event;
 import entities.Rating;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.Map;
  * Created by macbook on 03.01.17
  */
 @Repository
-public class EventDaoImpl implements EventDao {
+public class EventDaoImpl extends AbstractDao implements EventDao {
     private long currentId = 1;
     private Map<Long, Event> events = new HashMap<>();
 

@@ -15,7 +15,7 @@ import java.util.Map;
  * Created by macbook on 03.01.17
  */
 @Repository
-public class UserDaoImpl implements UserDao {
+public class UserDaoImpl extends AbstractDao implements UserDao {
     private long currentId = 1;
     private Map<Long, User> users = new HashMap<>();
 
