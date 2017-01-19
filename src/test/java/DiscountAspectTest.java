@@ -57,7 +57,6 @@ public class DiscountAspectTest extends TestCase {
         discountService.getDiscount(null, testEvent,  BIRTHDAY.minusDays(10).atStartOfDay(), 13);
         discountService.getDiscount(null, testEvent,  BIRTHDAY.minusDays(10).atStartOfDay(), 13);
 
-
         Map<String, Long> totalDiscountApplyCounter = discountAspect.getTotalDiscountApplyCounter();
         assertEquals(Long.valueOf(3), totalDiscountApplyCounter.get(BirthdayDiscountStrategy.class.getCanonicalName()));
         assertEquals(Long.valueOf(3), totalDiscountApplyCounter.get(SoldTicketDiscountStrategy.class.getCanonicalName()));

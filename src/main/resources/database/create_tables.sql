@@ -1,7 +1,7 @@
 CREATE TABLE users (
-  id       INTEGER PRIMARY KEY,
-  name     VARCHAR(30),
- /* birthday DATE,*/
+  id       INTEGER PRIMARY KEY AUTO_INCREMENT,
+  name     VARCHAR(40),
+  birthday DATE,
   email    VARCHAR(50)
 );
 

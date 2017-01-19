@@ -1,5 +1,6 @@
 package services.impl;
 
+import dao.PurchasedTicketDao;
 import dao.UserDao;
 import entities.Ticket;
 import entities.User;
@@ -15,12 +16,8 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserDao userDao;
-
-    @Autowired
-    public UserServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
+    private UserDao userDao;
+    private PurchasedTicketDao purchasedTicketDao;
 
     @Override
     public long save(String name, LocalDate birthday, String email) {
@@ -49,6 +46,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addPurchasedTicket(User user, Ticket ticket) {
-        userDao.addPurchasedTicket(user, ticket);
+//        purchasedTicketDao.addPurchasedTicket(user, ticket);
+    }
+
+    @Autowired
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    @Autowired
+    public void setPurchasedTicketDao(PurchasedTicketDao purchasedTicketDao) {
+        this.purchasedTicketDao = purchasedTicketDao;
     }
 }
