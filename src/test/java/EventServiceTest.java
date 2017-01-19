@@ -15,8 +15,9 @@ import services.EventService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppConfig.class)
 public class EventServiceTest extends TestCase {
-    private static final String TEST_EVENT_1 = "Test Event 1";
-    private static final String TEST_EVENT_2 = "Test Event 2";
+    private static final String TEST_EVENT_1 = "New Test Event 1";
+    private static final String TEST_EVENT_2 = "New Test Event 2";
+    private static final String TEST_EVENT_3 = "New Test Event 3";
 
     @Autowired
     private EventService eventService;
@@ -31,14 +32,16 @@ public class EventServiceTest extends TestCase {
 
     @Test
     public void testGetEventById() {
-        Event eventByName = eventService.getEventByName(TEST_EVENT_1);
-        assertEquals(TEST_EVENT_1, eventByName.getName());
+        long id = eventService.save(TEST_EVENT_2, 20, Rating.HIGH);
+        assertTrue("Id is more than 0", id > 0);
+        Event eventByName = eventService.getEventByName(TEST_EVENT_2);
+        assertEquals(TEST_EVENT_2, eventByName.getName());
     }
 
     @Test
     public void testRemoveEvent() {
         int initialSize = eventService.getAll().size();
-        long id = eventService.save(TEST_EVENT_2, 40, Rating.LOW);
+        long id = eventService.save(TEST_EVENT_3, 40, Rating.LOW);
         assertEquals(initialSize + 1, eventService.getAll().size());
         eventService.remove(id);
         assertEquals(initialSize, eventService.getAll().size());

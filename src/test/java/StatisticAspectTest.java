@@ -3,7 +3,6 @@ import configuration.AppConfig;
 import configuration.AspectConfiguration;
 import entities.*;
 import junit.framework.TestCase;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,9 +25,9 @@ import java.util.Map;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {AppConfig.class, AspectConfiguration.class})
 public class StatisticAspectTest extends TestCase {
-    private static final String TEST_EVENT_1 = "Test Event 1";
-    private static final String TEST_EVENT_2 = "Test Event 2";
-    private static final String TEST_EVENT_3 = "Test Event 3";
+    private static final String TEST_EVENT_1 = "Event 1";
+    private static final String TEST_EVENT_2 = "Event 2";
+    private static final String TEST_EVENT_3 = "Event 3";
     private static final LocalDateTime DATE_TIME_EVENT_1 = LocalDateTime.of(2017, 11, 11, 13, 0);
     private static final LocalDateTime DATE_TIME_EVENT_2 = LocalDateTime.of(2017, 11, 11, 15, 0);
     private static final LocalDateTime DATE_TIME_EVENT_3 = LocalDateTime.of(2017, 11, 11, 17, 0);

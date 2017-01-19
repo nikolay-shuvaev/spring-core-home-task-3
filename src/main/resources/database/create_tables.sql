@@ -5,6 +5,13 @@ CREATE TABLE users (
   email    VARCHAR(50)
 );
 
+CREATE TABLE events (
+  id         INTEGER PRIMARY KEY AUTO_INCREMENT,
+  name       VARCHAR(150),
+  base_price DOUBLE,
+  rating     VARCHAR(10)
+);
+
 CREATE TABLE counters (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   event_id INTEGER,
