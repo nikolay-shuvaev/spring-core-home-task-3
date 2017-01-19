@@ -57,12 +57,12 @@ public class DiscountAspectTest extends TestCase {
         discountService.getDiscount(null, testEvent,  BIRTHDAY.minusDays(10).atStartOfDay(), 13);
         discountService.getDiscount(null, testEvent,  BIRTHDAY.minusDays(10).atStartOfDay(), 13);
 
-        Map<Class, Long> totalDiscountApplyCounter = discountAspect.getTotalDiscountApplyCounter();
-        assertEquals(Long.valueOf(3), totalDiscountApplyCounter.get(BirthdayDiscountStrategy.class));
-        assertEquals(Long.valueOf(3), totalDiscountApplyCounter.get(SoldTicketDiscountStrategy.class));
 
-        Map<Class, Map<User, Long>> particularUserCount = discountAspect.getParticularUserCount();
-        assertEquals(Long.valueOf(3), particularUserCount.get(BirthdayDiscountStrategy.class).get(testUser));
-        assertEquals(Long.valueOf(1), particularUserCount.get(SoldTicketDiscountStrategy.class).get(testUser));
+        Map<String, Long> totalDiscountApplyCounter = discountAspect.getTotalDiscountApplyCounter();
+        assertEquals(Long.valueOf(3), totalDiscountApplyCounter.get(BirthdayDiscountStrategy.class.getCanonicalName()));
+        assertEquals(Long.valueOf(3), totalDiscountApplyCounter.get(SoldTicketDiscountStrategy.class.getCanonicalName()));
+
+        assertEquals(Long.valueOf(3), discountAspect.getParticularUserCount(testUser).get(BirthdayDiscountStrategy.class.getCanonicalName()));
+        assertEquals(Long.valueOf(1), discountAspect.getParticularUserCount(testUser).get(SoldTicketDiscountStrategy.class.getCanonicalName()));
     }
 }

@@ -20,7 +20,6 @@ public class CounterDaoImpl extends AbstractDao implements CounterDao {
     private static final String SELECT_ALL = "SELECT * FROM COUNTERS;";
     private static final String UPDATE_COUNTERS = "UPDATE counters SET {0} = {0} + 1 WHERE event_id = ?;";
     private static final String INSERT_COUNTERS = "INSERT INTO counters (event_id, {0}) VALUES(?, 1);";
-    private MessageFormat messageFormat;
 
     @Override
     public void incrementAccessedByName(long id) {

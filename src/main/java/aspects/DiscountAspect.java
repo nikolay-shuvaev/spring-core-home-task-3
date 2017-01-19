@@ -1,10 +1,12 @@
 package aspects;
 
+import dao.DiscountCounterDao;
 import entities.User;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -16,9 +18,7 @@ import java.util.Map;
 @Aspect
 @Component
 public class DiscountAspect {
-    private Map<Class, Long> totalDiscountApplyCounter = new HashMap<>();
-    private Map<Class, Map<User, Long>> particularUserCount = new HashMap<>();
-
+    private DiscountCounterDao discountCounterDao;
 
     @Pointcut("execution(* services.strategies.DiscountStrategy.*(..))")
     public void discountStrategies() {
@@ -35,7 +35,7 @@ public class DiscountAspect {
     public void countTotalAppliedStrategies(JoinPoint joinPoint, Integer discount) {
         if (discount > 0) {
             Class clazz = joinPoint.getTarget().getClass();
-            increaseCount(clazz, totalDiscountApplyCounter);
+            discountCounterDao.incrementTotal(clazz.getCanonicalName());
         }
     }
 
@@ -45,32 +45,22 @@ public class DiscountAspect {
         if (discount > 0) {
             Class clazz = joinPoint.getTarget().getClass();
             if (user != null) {
-                updateUserCountInformation(clazz, user);
+                discountCounterDao.incrementForUser(clazz.getCanonicalName(), user.getId());
             }
         }
     }
 
-    private void updateUserCountInformation(Class clazz, User user) {
-        Map<User, Long> userCount = particularUserCount.get(clazz);
-        if (userCount == null) {
-            userCount = new HashMap<>();
-            particularUserCount.put(clazz, userCount);
-        }
-        increaseCount(user, userCount);
+    public Map<String, Long> getTotalDiscountApplyCounter() {
+        return discountCounterDao.getTotals();
     }
 
-    public Map<Class, Long> getTotalDiscountApplyCounter() {
-        return totalDiscountApplyCounter;
+    public Map<String, Long> getParticularUserCount(User testUser) {
+        return discountCounterDao.getTotalForUser(testUser.getId());
     }
 
-    public Map<Class, Map<User, Long>> getParticularUserCount() {
-        return particularUserCount;
-    }
-
-    private static <T> void increaseCount(T t, Map<T, Long> map) {
-        Long count = map.get(t);
-        count = (count != null) ? count + 1 : 1L;
-        map.put(t, count);
+    @Autowired
+    public void setDiscountCounterDao(DiscountCounterDao discountCounterDao) {
+        this.discountCounterDao = discountCounterDao;
     }
 }
 
