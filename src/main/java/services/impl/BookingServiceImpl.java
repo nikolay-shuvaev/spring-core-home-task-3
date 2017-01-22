@@ -69,6 +69,11 @@ public class BookingServiceImpl implements BookingService {
         return purchasedTicketDao.getBy(event, dateTime);
     }
 
+    @Override
+    public List<Ticket> getPurchasedTicketsForUser(User user) {
+        return purchasedTicketDao.getBy(user);
+    }
+
     private double calculatePriceBasedOnSeatType(Set<Seat> seats, double basePrice) {
         double result = 0;
         for (Seat seat : seats) {
@@ -101,7 +106,7 @@ public class BookingServiceImpl implements BookingService {
 
     private boolean isAllSeatsAvailableToBook(Event event, LocalDateTime dateTime, Set<Seat> seats) {
         Auditorium auditorium = auditoriumService.getAuditoriumByEventAndDate(event, dateTime);
-        boolean isSomeSeatsOccupied = isSomeSeatsOccupied(seats, auditorium);
+        boolean isSomeSeatsOccupied = isSomeSeatsOccupied(seats, event, dateTime);
         boolean isSeatsSuiteToAuditorium = isSeatsSuiteToAuditorium(seats, auditorium);
         return !isSomeSeatsOccupied && isSeatsSuiteToAuditorium;
     }
@@ -118,9 +123,9 @@ public class BookingServiceImpl implements BookingService {
         return true;
     }
 
-    private boolean isSomeSeatsOccupied(Set<Seat> seats, Auditorium auditorium) {
-        Set<Seat> occupiedSeats = auditoriumService.getOccupiedSeats(auditorium);
-        return occupiedSeats != null && !occupiedSeats.removeAll(seats);
+    private boolean isSomeSeatsOccupied(Set<Seat> seats, Event event, LocalDateTime dateTime) {
+        Set<Seat> occupiedSeats = purchasedTicketDao.getOccupiedSeats(event, dateTime);
+        return occupiedSeats != null && occupiedSeats.removeAll(seats);
     }
 
     private boolean isAuditoriumExistForEvent(Event event, LocalDateTime dateTime) {

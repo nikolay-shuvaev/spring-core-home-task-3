@@ -25,9 +25,6 @@ public class EventDaoImpl extends AbstractDao implements EventDao {
     private static final String INSERT_EVENT = "INSERT INTO events(name, base_price, rating) VALUES(?, ?, ?);";
     private static final String DELETE_EVENT = "DELETE FROM events WHERE id = ?";
 
-    private long currentId = 1;
-    private Map<Long, Event> events = new HashMap<>();
-
     @Override
     public long save(String name, double basePrice, Rating rating) {
         final KeyHolder holder = new GeneratedKeyHolder();

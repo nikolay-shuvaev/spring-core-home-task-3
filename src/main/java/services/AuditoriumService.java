@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by macbook on 02.01.17.
+ * Created by macbook on 02.01.17
  */
 public interface AuditoriumService {
     List<Auditorium> getAll();
@@ -19,6 +19,4 @@ public interface AuditoriumService {
     Auditorium addEvent(Event event, Auditorium auditorium, LocalDateTime dateTime);
 
     Auditorium getAuditoriumByEventAndDate(Event event, LocalDateTime dateTime);
-
-    Set<Seat> getOccupiedSeats(Auditorium auditorium);
 }

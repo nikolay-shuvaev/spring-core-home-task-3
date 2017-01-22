@@ -71,11 +71,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     }
 
     private static RowMapper<User> getUserRowMapper() {
-        return (rm, i) -> {
-            long user_id = rm.getLong("id");
-            String name = rm.getString("name");
-            Date birthday = rm.getDate("birthday");
-            String user_email = rm.getString("email");
+        return (rs, i) -> {
+            long user_id = rs.getLong("id");
+            String name = rs.getString("name");
+            Date birthday = rs.getDate("birthday");
+            String user_email = rs.getString("email");
             return new User(user_id, name, birthday.toLocalDate(), user_email);
         };
     }

@@ -91,6 +91,12 @@ public class BookingServiceTest extends TestCase {
         assertEquals(true, success);
         List<Ticket> purchasedTickets = bookingService.getPurchasedTicketsForEvent(testEvent, EVENT_DATE_TIME);
         assertEquals(tickets.size(), purchasedTickets.size());
+        try {
+            bookingService.bookTicket(tickets);
+            fail("Exception expected");
+        } catch (Exception e) {
+            assertTrue(e instanceof IllegalArgumentException);
+        }
     }
 
     @Test
@@ -106,8 +112,8 @@ public class BookingServiceTest extends TestCase {
 
         boolean success = bookingService.bookTicket(tickets);
         assertEquals(true, success);
-        User userWithTickets = userService.getById(userId);
-        assertEquals(3, userWithTickets.getTickets().size());
+        List<Ticket> userTickets = bookingService.getPurchasedTicketsForUser(user);
+        assertEquals(3, userTickets.size());
     }
 
 }
