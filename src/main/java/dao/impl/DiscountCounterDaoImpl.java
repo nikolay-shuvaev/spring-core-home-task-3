@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.DiscountCounterDao;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedHashMap;
@@ -32,33 +33,29 @@ public class DiscountCounterDaoImpl extends AbstractDao implements DiscountCount
 
     @Override
     public Map<String, Long> getTotals() {
-        return getJdbcTemplate().query(SELECT_ALL_TOTAL, rs -> {
-            Map<String, Long> result = new LinkedHashMap<>();
-            while (rs.next()) {
-                String class_name = rs.getString("class_name");
-                long counter = rs.getLong("counter");
-                result.put(class_name, counter);
-            }
-            return result;
-        });
+        return getJdbcTemplate().query(SELECT_ALL_TOTAL, getMapResultSetExtractor());
     }
 
     @Override
     public Map<String, Long> getTotalForUser(Long user_id) {
-        return getJdbcTemplate().query(SELECT_ALL_FOR_USER, new Object[]{user_id}, rs -> {
-            Map<String, Long> result = new LinkedHashMap<>();
-            while (rs.next()) {
-                String class_name = rs.getString("class_name");
-                long counter = rs.getLong("counter");
-                result.put(class_name, counter);
-            }
-            return result;
-        });
+        return getJdbcTemplate().query(SELECT_ALL_FOR_USER, new Object[]{user_id}, getMapResultSetExtractor());
     }
 
     private String getSqlStatementForTotal(String canonicalName) {
         Integer count = getJdbcTemplate().queryForObject(COUNT_ROWS_FOR_TOTAL, new String[]{canonicalName}, Integer.class);
         return count > 0 ? UPDATE_TOTAL_COUNTERS : INSERT_TOTAL_COUNTERS;
+    }
+
+    private static ResultSetExtractor<Map<String, Long>> getMapResultSetExtractor() {
+        return rs -> {
+            Map<String, Long> result = new LinkedHashMap<>();
+            while (rs.next()) {
+                String class_name = rs.getString("class_name");
+                long counter = rs.getLong("counter");
+                result.put(class_name, counter);
+            }
+            return result;
+        };
     }
 
     private String getSqlStatementForUser(String canonicalName, Long user_id) {

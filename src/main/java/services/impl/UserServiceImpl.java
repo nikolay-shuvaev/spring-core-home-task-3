@@ -44,11 +44,6 @@ public class UserServiceImpl implements UserService {
         return userDao.getAll();
     }
 
-    @Override
-    public void addPurchasedTicket(User user, Ticket ticket) {
-//        purchasedTicketDao.addPurchasedTicket(user, ticket);
-    }
-
     @Autowired
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;

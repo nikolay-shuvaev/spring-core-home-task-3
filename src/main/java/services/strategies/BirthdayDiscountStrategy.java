@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * Created by macbook on 02.01.17.
+ * Created by macbook on 02.01.17
  */
 public class BirthdayDiscountStrategy extends DiscountStrategyBase {
     private int discountDays;

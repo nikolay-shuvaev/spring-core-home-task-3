@@ -55,12 +55,7 @@ public class BookingServiceImpl implements BookingService {
     public boolean bookTicket(List<Ticket> tickets) {
         validateTickets(tickets);
 
-        for (Ticket ticket : tickets) {
-            purchasedTicketDao.saveTicket(ticket);
-            if (ticket.getUser() != null) {
-                userService.addPurchasedTicket(ticket.getUser(),ticket);
-            }
-        }
+        tickets.forEach(purchasedTicketDao::saveTicket);
         return true;
     }
 

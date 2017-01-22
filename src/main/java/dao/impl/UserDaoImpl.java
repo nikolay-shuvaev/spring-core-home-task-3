@@ -27,8 +27,6 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     private static final String INSERT_USER = "INSERT INTO users(name, birthday,email) VALUES(?, ?, ?);";
     private static final String DELETE_USER = "DELETE FROM users WHERE id = ?";
 
-    private Map<Long, User> users = new HashMap<>();
-
     @Override
     public long save(String name, LocalDate birthday, String email) {
         final KeyHolder holder = new GeneratedKeyHolder();
@@ -63,11 +61,6 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
     @Override
     public List<User> getAll() {
         return getJdbcTemplate().query(SELECT_ALL_USER, getUserRowMapper());
-    }
-
-    public void addPurchasedTicket(User user, Ticket ticket) {
-        User storedUser = users.get(user.getId());
-        storedUser.getTickets().add(ticket);
     }
 
     private static RowMapper<User> getUserRowMapper() {

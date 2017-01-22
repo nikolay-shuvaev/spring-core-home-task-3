@@ -10,6 +10,7 @@ import services.AuditoriumService;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by macbook on 02.01.17
@@ -37,14 +38,10 @@ public class AuditoriumServiceImpl implements AuditoriumService {
 
     @Override
     public Auditorium getByName(String name) {
-        if (name != null) {
-            for (Auditorium auditorium : auditoriumList) {
-                if (name.equals(auditorium.getName())) {
-                    return auditorium;
-                }
-            }
-        }
-        return null;
+        Optional<Auditorium> auditorium = auditoriumList.stream()
+                .filter(a -> a.getName().equals(name))
+                .findAny();
+        return auditorium.orElse(null);
     }
 
     @Override
